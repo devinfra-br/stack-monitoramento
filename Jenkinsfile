@@ -17,7 +17,7 @@ pipeline {
                 sh 'rm -rf automation-example'
                 sh 'git clone https://github.com/devinfra-br/automation-example.git'
                 sh 'cd automation-example'
-                sh 'sh iac/bash-scripts/ansible-app-deploy.sh testes server1'
+                sh 'iac/bash-scripts/ansible-app-deploy.sh testes server1'
             }
         }
 
