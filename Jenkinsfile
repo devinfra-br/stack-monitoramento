@@ -14,6 +14,7 @@ pipeline {
         stage('Clone Infra Tools') {
             steps {
                 echo 'Teste de Conexão Ansible'
+                sh 'rm -rf automation-example'
                 sh 'git clone https://github.com/devinfra-br/automation-example.git'
                 sh 'ls -lsa'
                 sh 'sh automation-example/iac/bash-scripts/ansible-app-deploy.sh testes server1'
