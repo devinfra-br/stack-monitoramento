@@ -1,0 +1,16 @@
+name: Monitoring_Stack
+project: Infraestrutura como código
+remote_user: ubuntu
+docker_group: docker
+botocore_version: "1.17.52"
+awscli_version: "1.18.129"
+hosts_01: "192.168.10.105"
+
+# App Configs
+app_name: monitoramento
+git_repo: https://github.com/devinfra-br/stack-monitoramento.git
+git_branch: master
+docker_network: monitoring
+dst_app: /srv/monitoring
+prefix: iac
+

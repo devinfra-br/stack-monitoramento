@@ -28,8 +28,6 @@ $ docker exec -ti container_name sh
 - Grafana  [http://localhost:3000](http://localhost:3000) (admin/admin)
 - Prometeus [http://localhost:9090](http://localhost:9090) 
 
-
-
 ### Documentação oficial para consulta
 - Grafana Dasboards [https://grafana.com/grafana/dashboards](https://grafana.com/grafana/dashboards).
 - Grafana Documentação [https://grafana.com/docs/](https://grafana.com/docs/)
