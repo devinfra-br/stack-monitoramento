@@ -1,4 +1,8 @@
+
 ## Monitoring Stack
+Stack de monitoramento exemplo para estudo.
+ 
+### Containers
 
 - Grafana
 - Prometheus
@@ -6,17 +10,29 @@
 - Alertmanager
 - Cadvisor
 
+### Iniciando e acessando Stack
 
-## Load Teste
-wrk -t4 -c100 http://localhost
+```ssh
+$ docker-compose up -d --build
+```
 
-wrk -t4 -c100 http://localhost
+### Acessando containers
 
-wrk -t10 -c100 http://localhost
+```ssh
+$ docker container ls
+$ docker exec -ti container_name sh
+```
 
-wrk -t10 -c100 http://localhost/api/
+### Acessando via Browser
 
-wrk -t10 -c100 -d10s  http://localhost/api/
+- Grafana  [http://localhost:3000](http://localhost:3000) (admin/admin)
+- Prometeus [http://localhost:9090](http://localhost:9090) 
 
 
 
+### Documentação oficial para consulta
+- Grafana Dasboards [https://grafana.com/grafana/dashboards](https://grafana.com/grafana/dashboards).
+- Grafana Documentação [https://grafana.com/docs/](https://grafana.com/docs/)
+- Prometheus [https://prometheus.io/](https://prometheus.io/)
+- CAdvisor [https://github.com/google/cadvisor](https://github.com/google/cadvisor)
+- Node-Exporter [https://github.com/prometheus/node_exporter](https://github.com/prometheus/node_exporter)
