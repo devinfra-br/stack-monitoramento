@@ -2,8 +2,6 @@ version: '3.3'
 services:
   prometheus:
       image: prom/prometheus
-      container_name: prometheus
-      hostname: prometheus
       volumes:
       - ./conf/prometheus/:/etc/prometheus/
       - prometheus_data:/var/lib/prometheus
@@ -12,26 +10,24 @@ services:
         - cadvisor:cadvisor
         - node-exporter:node-exporter
       networks:
-        - monitoring
+        - frontend
       ports:
         - 9090:9090  
 
   node-exporter:
     image: quay.io/prometheus/node-exporter
-    container_name: node-exporter
     hostname: node-exporter
     volumes:
       - /proc:/usr/proc
       - /sys:/usr/sys
       - /:/rootfs
     networks:
-      - monitoring
+      - frontend
     ports:
       - 9100:9100
 
   cadvisor:
     image: google/cadvisor
-    container_name: cadvisor
     hostname: cadvisor
     volumes:
       - /:/rootfs:ro
@@ -42,11 +38,10 @@ services:
     networks:
       - frontend
     ports:
-      - 8080:8080
+      - 8081:8080
 
   grafana:
     image: grafana/grafana
-    hostname: grafana
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -57,12 +52,80 @@ services:
     depends_on:
       - prometheus      
     networks:
-      - monitoring
+      - frontend
+
+  elasticsearch:
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks
+      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    networks:
+      - frontend
+
+  logstash:
+    build:
+      context: logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - frontend
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - "5601:5601"
+    networks:
+      - frontend
+    depends_on:
+      - elasticsearch
 
 networks:
-  monitoring:
+  frontend:
     external: true
 
 volumes:
     prometheus_data:
     grafana_data:
+    elasticsearch:
