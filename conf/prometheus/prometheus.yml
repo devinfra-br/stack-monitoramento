@@ -2,7 +2,7 @@ global:
   scrape_interval:     10s
   evaluation_interval: 10s
   external_labels:
-      monitor: 'giropops-monitoring'
+      monitor: 'Devinfra-Stack-Monitoring'
 rule_files:
   - 'alert.rules'
 alerting:
@@ -29,20 +29,48 @@ scrape_configs:
       labels:
         alias: 'cadvisor'
 
-  - job_name: 'netdata'
+  - job_name: 'server-master'
     metrics_path: '/api/v1/allmetrics'
     params:
       format: [prometheus]
     honor_labels: true
     scrape_interval: 5s
     static_configs:
-         - targets: ['192.168.10.103:19999', '192.168.10.105:19999']
+         - targets: ['192.168.10.103:19999']
 
-  - job_name: 'docker'
+  - job_name: 'server-minion-web'
+    metrics_path: '/api/v1/allmetrics'
+    params:
+      format: [prometheus]
+    honor_labels: true
+    scrape_interval: 5s
+    static_configs:
+         - targets: ['192.168.10.105:19999']
+
+  - job_name: 'server-minion-web2'
+    metrics_path: '/api/v1/allmetrics'
+    params:
+      format: [prometheus]
+    honor_labels: true
+    scrape_interval: 5s
+    static_configs:
+         - targets: ['192.168.10.106:19999']                  
+
+  - job_name: 'docker-server1'
+         # metrics_path defaults to '/metrics'
+         # scheme defaults to 'http'.
+    static_configs:
+      - targets: ['192.168.10.103:9323']
+
+  - job_name: 'docker-server2'
          # metrics_path defaults to '/metrics'
          # scheme defaults to 'http'.
     static_configs:
       - targets: ['192.168.10.105:9323']
-# A scrape configuration containing exactly one endpoint to scrape:
 
-  
+  - job_name: 'docker-server3'
+         # metrics_path defaults to '/metrics'
+         # scheme defaults to 'http'.
+    static_configs:
+      - targets: ['192.168.10.106:9323']            
+# A scrape configuration containing exactly one endpoint to scrape:
