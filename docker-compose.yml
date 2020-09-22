@@ -10,7 +10,7 @@ services:
         - cadvisor:cadvisor
         - node-exporter:node-exporter
       networks:
-        - frontend
+        - monitoring
       ports:
         - 9090:9090  
 
@@ -22,7 +22,7 @@ services:
       - /sys:/usr/sys
       - /:/rootfs
     networks:
-      - frontend
+      - monitoring
     ports:
       - 9100:9100
 
@@ -36,7 +36,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - frontend
+      - monitoring
     ports:
       - 8081:8080
 
@@ -52,7 +52,7 @@ services:
     depends_on:
       - prometheus      
     networks:
-      - frontend
+      - monitoring
 
   elasticsearch:
     build:
@@ -77,7 +77,7 @@ services:
       # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
     networks:
-      - frontend
+      - monitoring
 
   logstash:
     build:
@@ -100,7 +100,7 @@ services:
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
-      - frontend
+      - monitoring
     depends_on:
       - elasticsearch
 
@@ -117,12 +117,12 @@ services:
     ports:
       - "5601:5601"
     networks:
-      - frontend
+      - monitoring
     depends_on:
       - elasticsearch
 
 networks:
-  frontend:
+  monitoring:
     external: true
 
 volumes:

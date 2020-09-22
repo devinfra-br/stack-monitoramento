@@ -25,8 +25,7 @@ pipeline {
         stage('Execute Ansible') {
             steps {
                 echo 'Deploy Stack Monitoramento'
-                sh 'cd automation-example'
-                sh 'sh automation-example/iac/bash-scripts/ansible-app-deploy.sh compose server1'
+                sh './automation-example/iac/bash-scripts/ansible-app-deploy.sh compose server1'
             }
         }
     }
