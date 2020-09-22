@@ -18,7 +18,7 @@ pipeline {
                 sh 'git clone https://github.com/devinfra-br/automation-example.git'
                 sh 'chmod 777 automation-example'
                 sh 'chmod 400 automation-example/iac/key-fake-test/ubuntu-key'
-                sh 'automation-example/iac/bash-scripts/ansible-app-deploy.sh testes server1'
+                sh './automation-example/iac/bash-scripts/ansible-app-deploy.sh testes server1'
             }
         }
 
