@@ -12,9 +12,8 @@ services:
         - monitoring
       ports:
         - 9090:9090  
-      deploy:
-        placement:
-          constraints: [setup == main]  
+      labels:
+        - "setup=main"  
 
   node-exporter:
     image: quay.io/prometheus/node-exporter
@@ -38,9 +37,8 @@ services:
       - monitoring
     ports:  
       - "9093:9093"
-    deploy:
-      placement:
-        constraints: [setup == main]  
+    labels:
+      - "setup=main"   
 
   cadvisor:
     image: google/cadvisor
@@ -68,9 +66,8 @@ services:
       - prometheus      
     networks:
       - monitoring
-    deploy:
-      placement:
-        constraints: [setup == main]  
+    labels:
+      - "setup=main"  
 
   elasticsearch:
     image: codeviewconsultoria/elasticsearch:7.9.1
@@ -85,6 +82,8 @@ services:
       discovery.type: single-node
     networks:
       - monitoring
+    labels:
+      - "setup=main"  
 
   logstash:
     image: codeviewconsultoria/logstash:7.9.1
@@ -109,6 +108,8 @@ services:
       - monitoring
     depends_on:
       - elasticsearch
+    labels:
+      - "setup=main"  
 
 networks:
   monitoring:
