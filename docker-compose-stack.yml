@@ -5,7 +5,6 @@ services:
       volumes:
       - ./conf/prometheus/:/etc/prometheus/
       - prometheus_data:/var/lib/prometheus
-      restart: always
       depends_on:
         - cadvisor:cadvisor
         - node-exporter:node-exporter
@@ -72,7 +71,7 @@ services:
     deploy:
       placement:
         constraints: [setup == main]  
-        
+
   elasticsearch:
     image: codeviewconsultoria/elasticsearch:7.9.1
     volumes:
