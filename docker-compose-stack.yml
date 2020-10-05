@@ -80,8 +80,17 @@ services:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       ELASTIC_PASSWORD: monitoring
       discovery.type: single-node
+      xpack.security.enabled: 'false'
+      xpack.monitoring.enabled: 'false'
+      xpack.graph.enabled: 'false'
+      xpack.watcher.enabled: 'false'
     networks:
       - monitoring
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == master  
     labels:
       - "setup=main"  
 
@@ -100,6 +109,20 @@ services:
     depends_on:
       - elasticsearch
 
+  logspout:
+    image: bekt/logspout-logstash
+    environment:
+      ROUTE_URIS: 'logstash://logstash:5000'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - logstash
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+
   kibana:
     image: codeviewconsultoria/kibana:7.9.1
     ports:
@@ -110,7 +133,13 @@ services:
       - elasticsearch
     labels:
       - "setup=main"  
-
+    environment:
+      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+      XPACK_SECURITY_ENABLED: 'false'
+      XPACK_MONITORING_ENABLED: 'false'
+    deploy:
+      replicas: 1
+      
 networks:
   monitoring:
 
