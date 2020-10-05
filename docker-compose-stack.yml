@@ -92,8 +92,6 @@ services:
       - monitoring
     depends_on:
       - elasticsearch
-    restart_policy:
-      condition: on-failure
 
   kibana:
     image: codeviewconsultoria/kibana:7.9.1
