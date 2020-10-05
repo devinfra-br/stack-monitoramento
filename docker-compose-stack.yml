@@ -13,6 +13,9 @@ services:
         - monitoring
       ports:
         - 9090:9090  
+      deploy:
+        placement:
+          constraints: [setup == main]  
 
   node-exporter:
     image: quay.io/prometheus/node-exporter
@@ -36,6 +39,9 @@ services:
       - monitoring
     ports:  
       - "9093:9093"
+    deploy:
+      placement:
+        constraints: [setup == main]  
 
   cadvisor:
     image: google/cadvisor
@@ -63,7 +69,10 @@ services:
       - prometheus      
     networks:
       - monitoring
-
+    deploy:
+      placement:
+        constraints: [setup == main]  
+        
   elasticsearch:
     image: codeviewconsultoria/elasticsearch:7.9.1
     volumes:
