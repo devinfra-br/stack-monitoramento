@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.7'
 services:
   prometheus:
       image: prom/prometheus
@@ -6,7 +6,7 @@ services:
       - ./conf/prometheus/:/etc/prometheus/
       - prometheus_data:/var/lib/prometheus
       restart: always
-      links:
+      depends_on:
         - cadvisor:cadvisor
         - node-exporter:node-exporter
       networks:
@@ -92,6 +92,8 @@ services:
       - monitoring
     depends_on:
       - elasticsearch
+    restart_policy:
+      condition: on-failure
 
   kibana:
     image: codeviewconsultoria/kibana:7.9.1
