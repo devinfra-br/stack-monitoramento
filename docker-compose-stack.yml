@@ -148,7 +148,6 @@ services:
       xpack.graph.enabled: 'false'
       LOGSPOUT: ignore
       cluster.name: docker-cluster
-      bootstrap.memory_lock: true
       xpack.watcher.enabled: 'false'
       PROMETHEUS_ENDPOINT: http://prometheus:9090
       ELASTICSEARCH_ENDPOINT: http://elasticsearch:9200
