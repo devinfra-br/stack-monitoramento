@@ -5,9 +5,6 @@ global:
       monitor: 'Stack-Monitoring'
 rule_files:
   - "alert.rules"
-  - "alert.rules_nodes"
-  - "alert.rules_service-groups"
-  - "alert.rules_tasks"
 alerting:
   alertmanagers:
   - scheme: http
