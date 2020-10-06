@@ -6,7 +6,6 @@ services:
       volumes:
         - ./conf/prometheus/:/etc/prometheus/
         - prometheus_data:/var/lib/prometheus
-      command: -config.file=/etc/prometheus/prometheus.yml -storage.local.path=/prometheus -web.console.libraries=/etc/prometheus/console_libraries -web.console.templates=/etc/prometheus/consoles -alertmanager.url=http://alertmanager:9093
       depends_on:
         - cadvisor:cadvisor
         - node-exporter:node-exporter
@@ -162,8 +161,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    cap_add:
-      - IPC_LOCK
     deploy:
       mode: replicated
       replicas: 1
