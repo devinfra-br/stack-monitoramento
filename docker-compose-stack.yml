@@ -18,13 +18,6 @@ services:
       deploy:
         mode: replicated
         replicas: 1
-        resources:
-          limits:
-            cpus: '0.50'
-            memory: 1024M
-          reservations:
-            cpus: '0.50'
-            memory: 128M
 
   node-exporter:
     image: quay.io/prometheus/node-exporter
@@ -86,13 +79,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      resources:
-        limits:
-          cpus: '0.01'
-          memory: 32M
-        reservations:
-          cpus: '0.01'
-          memory: 16M
+ 
   cadvisor:
     image: google/cadvisor
     hostname: '{{.Node.ID}}'
@@ -108,13 +95,6 @@ services:
       - 8081:8080
     deploy:
       mode: global
-      resources:
-        limits:
-          cpus: '0.10'
-          memory: 128M
-        reservations:
-          cpus: '0.10'
-          memory: 64M
 
   grafana:
     image: grafana/grafana
@@ -154,23 +134,10 @@ services:
       ELASTICSEARCH_PASSWORD: monitoring
     networks:
       - monitoring
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
     deploy:
       mode: replicated
       replicas: 1
-      resources:
-        limits:
-          cpus: '2'
-          memory: 640M
-        reservations:
-          cpus: '0.5'
-          memory: 512M
+
       placement:
         constraints:
           - node.hostname == master  
@@ -198,13 +165,6 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 800M
-        reservations:
-          cpus: '0.25'
-          memory: 400M
 
   logspout:
     image: bekt/logspout-logstash
@@ -217,13 +177,6 @@ services:
       - logstash
     deploy:
       mode: global
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 64M
-        reservations:
-          cpus: '0.25'
-          memory: 32M
 
   kibana:
     image: codeviewconsultoria/kibana:7.9.1
@@ -243,13 +196,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 384M
-        reservations:
-          cpus: '0.25'
-          memory: 256M
+
       
 networks:
   monitoring:
